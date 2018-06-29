@@ -1,7 +1,9 @@
+@using System.Web
 @using BlazorNews.Client.Model
 @using BlazorNews.Shared
 @page "/"
 @inject HttpClient Http
+@inject Repositories.TopicsRepository TopicsRepo
 
 @foreach (var article in articles) {
 	<div class="media" style="margin-bottom: 10px">
@@ -29,8 +31,11 @@
 	protected override async Task OnInitAsync() {
 
 		config = await Http.GetJsonAsync<Config>("/api/config");
+		var topics = TopicsRepo.GetTopics();
 
-		var result = await Http.GetJsonAsync<NewsResponse>("https://newsapi.org/v2/everything?q=Blazor&apiKey=" + config.NewsApiKey);
+		var topicsQuery = string.Join(" OR ", topics.Select(topic => HttpUtility.UrlEncode(topic)));
+
+		var result = await Http.GetJsonAsync<NewsResponse>("https://newsapi.org/v2/everything?apiKey=" + config.NewsApiKey + "&q=" + topicsQuery);
 		articles = result?.Articles;
 
 	}

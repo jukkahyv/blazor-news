@@ -1,16 +1,37 @@
-﻿@page "/counter"
+@using System.Runtime.InteropServices.ComTypes
+@using BlazorNews.Client.Repositories
+@page "/counter"
+@inject Repositories.TopicsRepository TopicsRepo
 
-<h1>Counter</h1>
+<ul>
+	@foreach (var topic in topics) {
+		<li>
+			@topic			
+			<button type="button" class="btn btn-danger btn-sm" onclick="@(() => RemoveTopic(topic))">Delete</button>
+		</li>
+	}
+</ul>
 
-<p>Current count: @currentCount</p>
+<div class="input-group-append">
+	<input type="text" bind="newTopic" />
+	<button type="button" class="btn btn-primary" onclick="@AddTopic">Add</button>
+</div>
 
-<button class="btn btn-primary" onclick="@IncrementCount">Click me</button>
 
 @functions {
-    int currentCount = 0;
+	IEnumerable<string> topics = new string[0];
+	string newTopic;
 
-    void IncrementCount()
-    {
-        currentCount++;
-    }
+	public void AddTopic() {
+		TopicsRepo.AddTopic(newTopic);
+		newTopic = "";
+	}
+
+	public void RemoveTopic(string topic) {
+		TopicsRepo.RemoveTopic(topic);
+	}
+
+	protected override void OnInit() {
+		topics = TopicsRepo.GetTopics();
+	}
 }
