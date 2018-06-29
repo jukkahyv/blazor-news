@@ -1,4 +1,4 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -84,8 +84,18 @@ app {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+.credit {
+	font-size: small;
+	color: white;
+	margin-left: 5px;
+}
+
+.media {
+	margin-bottom: 10px;
+}
+
 @media (max-width: 767.98px) {
-    .main .top-row {
+	.main .top-row {
         display: none;
     }
 }

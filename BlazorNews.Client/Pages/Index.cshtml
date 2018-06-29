@@ -6,7 +6,7 @@
 @inject Repositories.TopicsRepository TopicsRepo
 
 @foreach (var article in articles) {
-	<div class="media" style="margin-bottom: 10px">
+	<div class="media">
 		@if (!string.IsNullOrEmpty((article.UrlToImage))) {
 			<a class="mr-3 col-sm-2" href="@article.Url">
 				<img class="col-sm-12" src="@article.UrlToImage" alt="Image">

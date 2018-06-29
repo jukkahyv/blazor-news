@@ -6,19 +6,23 @@
 </div>
 
 <div class=@(collapseNavMenu ? "collapse" : null) onclick=@ToggleNavMenu>
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match=NavLinkMatch.All>
-                <span class="oi oi-home" aria-hidden="true"></span> News
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="topics">
-                <span class="oi oi-plus" aria-hidden="true"></span> Topics
-            </NavLink>
-        </li>
-    </ul>
+	<ul class="nav flex-column">
+		<li class="nav-item px-3">
+			<NavLink class="nav-link" href="" Match=NavLinkMatch.All>
+				<span class="oi oi-home" aria-hidden="true"></span> News
+			</NavLink>
+		</li>
+		<li class="nav-item px-3">
+			<NavLink class="nav-link" href="topics">
+				<span class="oi oi-plus" aria-hidden="true"></span> Topics
+			</NavLink>
+		</li>
+	</ul>
 </div>
+
+<p class="credit">
+	News by NewsAPI.org
+</p>
 
 @functions {
     bool collapseNavMenu = true;
