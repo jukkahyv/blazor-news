@@ -1,0 +1,9 @@
+*.suo
+.vs/
+BlazorNews.Client/bin/
+BlazorNews.Client/obj/
+BlazorNews.Server/bin/
+BlazorNews.Server/obj/
+BlazorNews.Shared/obj/
+BlazorNews.Shared/bin/
+*.user
