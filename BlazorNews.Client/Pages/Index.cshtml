@@ -35,7 +35,7 @@
 
 		var topicsQuery = string.Join(" OR ", topics.Select(topic => HttpUtility.UrlEncode(topic)));
 
-		var result = await Http.GetJsonAsync<NewsResponse>("https://newsapi.org/v2/everything?apiKey=" + config.NewsApiKey + "&q=" + topicsQuery);
+		var result = await Http.GetJsonAsync<NewsResponse>($"https://newsapi.org/v2/everything?apiKey={config.NewsApiKey}&q={topicsQuery}");
 		articles = result?.Articles;
 
 	}
