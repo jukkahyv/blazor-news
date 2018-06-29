@@ -1,23 +1,36 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using BlazorNews.Shared;
+using Microsoft.AspNetCore.Blazor;
 
 namespace BlazorNews.Client.Repositories {
 	public class TopicsRepository {
 
-		private static List<string> topics = new List<string> {"Blazor"};
+		private readonly HttpClient http;
 
-		public IEnumerable<string> GetTopics() {
-			return topics;
+		public TopicsRepository(HttpClient http) {
+			this.http = http;
 		}
 
-		public void AddTopic(string topic) {
-			topics.Add(topic);
+		private List<Topic> topics = new List<Topic>();
+
+		public async Task<IEnumerable<string>> GetTopicsAsync() {
+			var topics = await http.GetJsonAsync<Topic[]>("api/topics");
+			this.topics = this.topics.ToList();
+			return topics.Select(t => t.TopicValue);
 		}
 
-		public void RemoveTopic(string topic) {
-			topics.Remove(topic);
+		public async Task AddTopicAsync(string topic) {
+			topics.Add(new Topic { TopicValue = topic });
+			await http.PostJsonAsync("api/topics", topics);
+		}
+
+		public async Task RemoveTopicAsync(string topic) {
+			topics.RemoveAll(t => t.TopicValue == topic);
+			await http.PostJsonAsync("api/topics", topics);
 		}
 
 	}

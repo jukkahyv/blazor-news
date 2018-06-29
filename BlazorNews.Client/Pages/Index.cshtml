@@ -31,7 +31,7 @@
 	protected override async Task OnInitAsync() {
 
 		config = await Http.GetJsonAsync<Config>("/api/config");
-		var topics = TopicsRepo.GetTopics();
+		var topics = await TopicsRepo.GetTopicsAsync();
 
 		var topicsQuery = string.Join(" OR ", topics.Select(topic => HttpUtility.UrlEncode(topic)));
 

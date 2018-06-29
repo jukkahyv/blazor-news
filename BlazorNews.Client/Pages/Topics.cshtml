@@ -17,21 +17,23 @@
 
 
 @functions {
-	IEnumerable<string> topics = new string[0];
+	List<string> topics = new List<string>();
 	string newTopic;
 
-	public void AddTopic() {
+	public async Task AddTopic() {
 		if (string.IsNullOrEmpty(newTopic))
 			return;
-		TopicsRepo.AddTopic(newTopic);
+		topics.Add(newTopic);
+		await TopicsRepo.AddTopicAsync(newTopic);
 		newTopic = "";
 	}
 
-	public void RemoveTopic(string topic) {
-		TopicsRepo.RemoveTopic(topic);
+	public async Task RemoveTopic(string topic) {
+		await TopicsRepo.RemoveTopicAsync(topic);
+		topics.Remove(topic);
 	}
 
-	protected override void OnInit() {
-		topics = TopicsRepo.GetTopics();
+	protected override async Task OnInitAsync() {
+		topics = (await TopicsRepo.GetTopicsAsync()).ToList();
 	}
 }

@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using System.Linq;
 using System.Net.Mime;
+using BlazorNews.Server.Database;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace BlazorNews.Server
@@ -27,7 +29,10 @@ namespace BlazorNews.Server
 			
 			services.Configure<Shared.Config>(configuration);
 
-            services.AddResponseCompression(options =>
+	        services.AddDbContext<NewsDbContext>(options =>
+		        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+			services.AddResponseCompression(options =>
             {
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
                 {
@@ -52,7 +57,11 @@ namespace BlazorNews.Server
                 routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}");
             });
 
-            app.UseBlazor<Client.Program>();
+	        /*using (var context = new NewsDbContext(app.ApplicationServices.GetRequiredService<DbContextOptions<NewsDbContext>>())) {
+		        context.Database.Migrate();
+	        }*/
+
+			app.UseBlazor<Client.Program>();
         }
     }
 }
