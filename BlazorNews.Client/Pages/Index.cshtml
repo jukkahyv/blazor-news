@@ -1,24 +1,36 @@
 @using BlazorNews.Client.Model
+@using BlazorNews.Shared
 @page "/"
 @inject HttpClient Http
 
 @foreach (var article in articles) {
-	 <div class="media">
-		 <img class="mr-3" src="@article.UrlToImage" alt="Image">
-		 <div class="media-body">
-			 <h5 class="mt-0">@article.Title</h5>
-			 @article.Description
-		 </div>
-	 </div>
+	<div class="media" style="margin-bottom: 10px">
+		@if (!string.IsNullOrEmpty((article.UrlToImage))) {
+			<a class="mr-3 col-sm-2" href="@article.Url">
+				<img class="col-sm-12" src="@article.UrlToImage" alt="Image">
+			</a>
+		}
+		<div class="media-body">
+			<h5 class="mt-0">
+				<a href="@article.Url">
+					@article.Title
+				</a>
+			</h5>
+			@article.Description
+		</div>
+	</div>
 }
 
 @functions {
 
 	Article[] articles = new Article[0];
+	Config config;
 
 	protected override async Task OnInitAsync() {
 
-		var result = await Http.GetJsonAsync<NewsResponse>("https://newsapi.org/v2/everything?q=Blazor");
+		config = await Http.GetJsonAsync<Config>("/api/config");
+
+		var result = await Http.GetJsonAsync<NewsResponse>("https://newsapi.org/v2/everything?q=Blazor&apiKey=" + config.NewsApiKey);
 		articles = result?.Articles;
 
 	}

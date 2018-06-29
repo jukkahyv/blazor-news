@@ -15,4 +15,10 @@
     <ProjectReference Include="..\BlazorNews.Shared\BlazorNews.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="keys.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

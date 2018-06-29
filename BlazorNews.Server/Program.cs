@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
@@ -14,6 +14,7 @@ namespace BlazorNews.Server
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseConfiguration(new ConfigurationBuilder()
+		            .AddJsonFile("keys.json")
                     .AddCommandLine(args)
                     .Build())
                 .UseStartup<Startup>()

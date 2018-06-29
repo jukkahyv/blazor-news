@@ -7,3 +7,4 @@ BlazorNews.Server/obj/
 BlazorNews.Shared/obj/
 BlazorNews.Shared/bin/
 *.user
+BlazorNews.Server/keys.json
