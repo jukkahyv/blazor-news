@@ -1,7 +1,26 @@
-﻿@page "/"
+@using BlazorNews.Client.Model
+@page "/"
+@inject HttpClient Http
 
-<h1>Hello, world!</h1>
+@foreach (var article in articles) {
+	 <div class="media">
+		 <img class="mr-3" src="@article.UrlToImage" alt="Image">
+		 <div class="media-body">
+			 <h5 class="mt-0">@article.Title</h5>
+			 @article.Description
+		 </div>
+	 </div>
+}
 
-Welcome to your new app.
+@functions {
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+	Article[] articles = new Article[0];
+
+	protected override async Task OnInitAsync() {
+
+		var result = await Http.GetJsonAsync<NewsResponse>("https://newsapi.org/v2/everything?q=Blazor");
+		articles = result?.Articles;
+
+	}
+
+}
