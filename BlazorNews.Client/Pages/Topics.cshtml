@@ -1,16 +1,18 @@
 @page "/topics"
 @inject Repositories.TopicsRepository TopicsRepo
 
-<ul>
+<table>
 	@foreach (var topic in topics) {
-		<li>
-			@topic			
-			<button type="button" class="btn btn-danger btn-sm" onclick="@(() => RemoveTopic(topic))">Delete</button>
-		</li>
+		<tr>
+			<td class="topic-col">@topic</td>
+			<td>
+				<button type="button" class="btn btn-danger btn-sm" onclick="@(() => RemoveTopic(topic))">Delete</button>
+			</td>
+		</tr>
 	}
-</ul>
+</table>
 
-<div class="input-group-append">
+<div class="input-group-append new-topic">
 	<input type="text" bind="newTopic" />
 	<button type="button" class="btn btn-primary" onclick="@AddTopic">Add</button>
 </div>
