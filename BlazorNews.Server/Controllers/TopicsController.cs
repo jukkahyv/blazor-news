@@ -23,23 +23,17 @@ namespace BlazorNews.Server.Controllers {
 		}
 
 		[HttpPost("api/topics")]
-		public async Task Update([FromBody] Topic[] topics) {
-			var newVals = topics.Select(t => t.TopicValue).ToHashSet();
-			var old = db.Topics.Select(t => t.TopicValue).ToHashSet();
-			var add = newVals.Except(old);
-			var remove = old.Except(newVals);
-
-			foreach (var t in add) {
-				await db.Topics.AddAsync(new Topic { TopicValue = t });
-			}
-
-			foreach (var t in remove) {
-				var oldTopic = db.Topics.First(t2 => t2.TopicValue == t);
-				db.Topics.Remove(oldTopic);
-			}
-
+		public async Task Add([FromBody] Topic topic) {
+			await db.Topics.AddAsync(topic);
 			await db.SaveChangesAsync();
+		}
 
+		[HttpDelete("api/topics")]
+		public async Task Delete(string topic) {
+			var oldTopic = db.Topics.FirstOrDefault(t => t.TopicValue == topic);
+			if (oldTopic != null)
+				db.Topics.Remove(oldTopic);
+			await db.SaveChangesAsync();
 		}
 
 	}
