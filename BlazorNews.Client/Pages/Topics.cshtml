@@ -1,6 +1,4 @@
-@using System.Runtime.InteropServices.ComTypes
-@using BlazorNews.Client.Repositories
-@page "/counter"
+@page "/topics"
 @inject Repositories.TopicsRepository TopicsRepo
 
 <ul>
@@ -23,6 +21,8 @@
 	string newTopic;
 
 	public void AddTopic() {
+		if (string.IsNullOrEmpty(newTopic))
+			return;
 		TopicsRepo.AddTopic(newTopic);
 		newTopic = "";
 	}
