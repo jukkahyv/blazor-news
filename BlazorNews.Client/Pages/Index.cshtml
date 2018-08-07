@@ -23,20 +23,45 @@
 	</div>
 }
 
+@if (articles.Count < total) {
+	<button type="button" class="btn btn-primary load-more" onclick="@NextPage">Load more</button>
+}
+
+<p class="@(loading ? "" : "loader-loaded")">
+	<img src="/css/loader.gif" alt="Loading" />
+	Loading...
+</p>
+
 @functions {
 
-	Article[] articles = new Article[0];
+	List<Article> articles = new List<Article>();
 	Config config;
+	int page = 1;
+	int total;
+	bool loading = false;
 
 	protected override async Task OnInitAsync() {
-
+		loading = true;
 		config = await Http.GetJsonAsync<Config>("/api/config");
+		await LoadArticles();
+	}
+
+	protected async Task NextPage() {
+		page++;
+		await LoadArticles();
+	}
+
+	private async Task LoadArticles() {
+
+		loading = true;
 		var topics = await TopicsRepo.GetTopicsAsync();
 
 		var topicsQuery = string.Join(" OR ", topics.Select(topic => HttpUtility.UrlEncode(topic)));
 
-		var result = await Http.GetJsonAsync<NewsResponse>($"https://newsapi.org/v2/everything?apiKey={config.NewsApiKey}&q={topicsQuery}");
-		articles = result?.Articles;
+		var result = await Http.GetJsonAsync<NewsResponse>($"https://newsapi.org/v2/everything?apiKey={config.NewsApiKey}&q={topicsQuery}&pagesize=10&page={page}");
+		total = result.TotalResults;
+		articles.AddRange(result?.Articles);
+		loading = false;
 
 	}
 

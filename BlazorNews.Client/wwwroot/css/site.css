@@ -139,3 +139,11 @@ app {
         display: block;
     }
 }
+
+.load-more {
+	margin-bottom: 20px;
+}
+
+.loader-loaded {
+	visibility: hidden;
+}
